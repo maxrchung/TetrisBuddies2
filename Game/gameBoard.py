@@ -16,6 +16,8 @@ class gameBoard():
         self.row = 20
         self.sS = 32
         self.timer = 0
+        self.timer2 = 0
+        self.clock2 = pygame.time.Clock()
         self.pressed = False
         self.grid = cells(self.col,self.row)
         self.opponentGrid = cells(self.col,self.row)
@@ -54,7 +56,7 @@ class gameBoard():
         self.saved = None
 
     def getPrevBlocks(self,blk):
-        if len(self.prevPos) < 20:
+        if len(self.prevPos) < 8:
             self.prevPos.append(blk.clone())
         else:
             del(self.prevPos[0])
@@ -82,9 +84,14 @@ class gameBoard():
             self.fadeInBlock(self.grid.next1, self.timer)
         else:
             self.drawBlock(self.grid.next1)
-        if(self.saved!=None):
-            self.drawBlock(self.saved)
+        if self.saved != None:
+            if(self.timer2 < 2550):
+                self.timer2 += self.clock2.tick()
+                self.fadeInBlock(self.saved, self.timer2)
+            else:
+                self.drawBlock(self.saved)
         self.clock.tick()
+        self.clock2.tick()
         self.drawgrid(self.grid, 0)
         self.drawgrid(self.opponentGrid, 1)
         pygame.display.flip() #updates self.screen
@@ -270,6 +277,7 @@ class gameBoard():
                 self.grid.next = block()
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
+                self.timer2 = 0
             elif self.grid.swapped==False:
                 temp = self.current
                 self.current = self.saved.moveIn()
@@ -278,6 +286,7 @@ class gameBoard():
                 self.saved = temp.save()
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
+                self.timer2 = 0
             self.keys[7]=False
         self.current = self.grav.fall(self.current,self.grid,self.timer)
         self.getPrevBlocks(self.current)
