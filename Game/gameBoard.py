@@ -10,6 +10,8 @@ from Soundmanager import *
 
 class gameBoard():
     def __init__(self):
+        pygame.font.init()
+        self.font = pygame.font.SysFont("ComicSans",15)
         self.col = 10
         self.row = 20
         self.sS = 32
@@ -18,6 +20,8 @@ class gameBoard():
         self.current = self.grid.next.moveIn()
         self.grid.nextBlocks(self.current)
         self.quit = False
+        self.playerName = self.font.render(Global.player, 1, (255,255,255))
+        self.opponentName = self.font.render(Global.opponent, 1, (255,255,255))
         # initialize the pygame module
         pygame.init()
 
@@ -41,6 +45,8 @@ class gameBoard():
 
     def update(self):
         self.screen.fill((55,55,55)) #clear screen
+        self.screen.blit(self.playerName, (5*self.sS,self.sS))
+        self.screen.blit(self.opponentName, (15*self.sS,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
         self.screen.blit(bkg,(self.col*self.sS,0))
         self.drawBlock(self.current) #draws current block
@@ -161,23 +167,6 @@ class gameBoard():
                 elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                     self.keys[7]=True
             # only do something if the event is of type QUIT
-            if event.type == pygame.KEYUP:
-                if event.key==pygame.K_t or event.key==pygame.K_z:
-                    self.keys[0]=False
-                elif event.key==pygame.K_s or event.key==pygame.K_DOWN:
-                    self.keys[1]=False
-                elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
-                    self.keys[2]=False
-                elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
-                    self.keys[3]=False
-                elif event.key==pygame.K_w or event.key==pygame.K_UP:
-                    self.keys[4]=False
-                elif event.key==pygame.K_r:
-                    self.keys[5]=False
-                elif event.key==pygame.K_SPACE:
-                    self.keys[6]=False
-                elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
-                    self.keys[7]=False
             elif event.type == pygame.QUIT:
                 # change the value to False, to exit the main loop
                 running = False
@@ -186,20 +175,23 @@ class gameBoard():
             if self.flipNudge(self.current,"R") != False:
                 self.current.rotate('R')
             self.keys[0]=False
-        elif self.keys[1] and pygame.time.get_ticks()>50:
+        elif self.keys[1]:
             if self.grid.checkCol(self.current)==False:
                 self.current.y+=1
             else:
                 self.grid.swapped = False
                 self.current = self.grid.place(self.current)
-        elif self.keys[2] and pygame.time.get_ticks()>50:
+            self.keys[1]=False
+        elif self.keys[2]:
             if (self.current.x+self.current.left()>0
                 and self.sideCol(self.current, -1)==False):
                 self.current.x-=1
-        elif self.keys[3] and pygame.time.get_ticks()>50:
+            self.keys[2]=False
+        elif self.keys[3]:
             if (self.current.x+self.current.right()+1<self.col
                 and self.sideCol(self.current, 1)==False):
                 self.current.x+=1
+            self.keys[3]=False
         elif self.keys[4]:
             if self.flipNudge(self.current,"L") != False:
                 self.current.rotate('L')
@@ -254,9 +246,9 @@ class gameBoard():
                 print("'l' to leave to lobby")
             return
 
-'''
+
 if __name__ == '__main__':    
     g = gameBoard()
     while True:
         g.run()
-'''
+
