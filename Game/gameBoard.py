@@ -11,7 +11,7 @@ from Soundmanager import *
 class gameBoard():
     def __init__(self):
         pygame.font.init()
-        self.font = pygame.font.SysFont("ComicSans",15)
+        self.font = pygame.font.SysFont("ComicSans",21)
         self.col = 10
         self.row = 20
         self.sS = 32
@@ -45,8 +45,8 @@ class gameBoard():
 
     def update(self):
         self.screen.fill((55,55,55)) #clear screen
-        self.screen.blit(self.playerName, (5*self.sS,self.sS))
-        self.screen.blit(self.opponentName, (15*self.sS,self.sS))
+        self.screen.blit(self.playerName, (3*self.sS,self.sS))
+        self.screen.blit(self.opponentName, (20*self.sS,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
         self.screen.blit(bkg,(self.col*self.sS,0))
         self.drawBlock(self.current) #draws current block
