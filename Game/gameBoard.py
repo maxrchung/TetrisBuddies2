@@ -21,10 +21,18 @@ class gameBoard():
         self.current = self.grid.next.moveIn()
         self.grid.nextBlocks(self.current)
         self.quit = False
+        self.prevPos = []
+        '''
         self.playerName = self.font.render(Global.player.getName(), 1, (255,255,255))
         self.opponentName = self.font.render(Global.opponent.getName(), 1, (255,255,255))
         self.playernamelength = len(Global.player.getName())
         self.opponentnamelength = len(Global.opponent.getName())
+        '''
+
+        self.playerName = self.font.render('name', 1, (255,255,255))
+        self.opponentName = self.font.render(('name'), 1, (255,255,255))
+        self.playernamelength = len('name')
+        self.opponentnamelength = len('name')
         # initialize the pygame module
         pygame.init()
 
@@ -42,6 +50,13 @@ class gameBoard():
         self.grav = gravity(1000,5)
         self.saved = None
 
+    def getPrevBlocks(self,blk):
+        if len(self.prevPos) < 20:
+            self.prevPos.append(blk.clone())
+        else:
+            del(self.prevPos[0])
+            self.prevPos.append(blk.clone())
+
     def getGrid(self): return self.grid
 
     def setOpponentGrid(self, newGrid): self.opponentGrid = newGrid
@@ -50,9 +65,11 @@ class gameBoard():
         self.timer += pygame.time.get_ticks()
         self.screen.fill((55,55,55)) #clear screen
         self.screen.blit(self.playerName, (5*self.sS - .5*self.playernamelength*7,self.sS))
-        self.screen.blit(self.opponentName, (5*self.sS - .5*self.opponentnamelength*7,self.sS))
+        self.screen.blit(self.opponentName, (21*self.sS - .5*self.opponentnamelength*7,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
         self.screen.blit(bkg,(self.col*self.sS,0))
+        for b in self.prevPos:
+            self.fadeInBlock(b,500)
         self.drawBlock(self.current) #draws current block
         self.drawGhost(self.current)
         self.drawBlock(self.grid.next)
@@ -242,6 +259,7 @@ class gameBoard():
                 Global.SoundManager.playsound('switch')
             self.keys[7]=False
         self.current = self.grav.fall(self.current,self.grid)
+        self.getPrevBlocks(self.current)
         self.update()
 
         if self.grid.lose:
