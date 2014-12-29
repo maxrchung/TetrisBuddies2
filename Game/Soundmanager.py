@@ -10,7 +10,7 @@ class soundmanager():
         # and probably the most relevant
         madoka = pygame.mixer.music.load('madokatetris.wav')
         # -1 to indicate repeat forever
-        #pygame.mixer.music.play(-1)
+        pygame.mixer.music.play(-1)
 
     def playsound(self, soundname):
         if soundname=='singleline':
