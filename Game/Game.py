@@ -82,6 +82,7 @@ class Game:
             print("'h' to host a room")
             print("'v' to view available rooms")
             print("'0', '1', '2', ... to join a room")
+            print("'q' to quit game")
             
             self.state = 'Lobby'
 
@@ -116,6 +117,12 @@ class Game:
                 Global.NetworkManager.getSocket().sendto(bytes(packet), ('<broadcast>', 6969))
                 # print('Broadcasted packet', response)
 
+            # Quit game
+            elif key == 'q':
+                print('You quit the game')
+                self.isRunning = False
+                Global.NetworkManager.disconnect()
+
             # Else display instructions
             else:
                 # Checks if the key is a number
@@ -128,6 +135,7 @@ class Game:
                     print("'h' to host a room") 
                     print("'v' to view available rooms")
                     print("'0', '1', '2', ... to join a room number")
+                    print("'q' to quit game")
                     return
 
                 # If it is then check if it is within range of the roomList
@@ -142,14 +150,15 @@ class Game:
                     self.clock.tick()
                     timer = 0
 
+                    print('Sending challenge request...')
+
                     response = ['LobbyChallenge', Global.player.getName()]
                     packet = pickle.dumps(response)
-
                     # Send a join request
                     Global.NetworkManager.getSocket().sendto(bytes(packet), (Global.opponent.getAddr(), 6969))
                     # print('Sent packet', response, Global.opponent.getAddr())
 
-                    # Will poll for a message back, with a TTL of 5 seconds (5000 milliseconds)
+                    # Will poll for a message back, with a TTL of 10 seconds (10000 milliseconds)
                     while timer <= 10000:
                         timer += self.clock.tick()
                         while Global.NetworkManager.getMessageQueue():
@@ -206,6 +215,7 @@ class Game:
                             print("'h' to host a room")
                             print("'v' to view available rooms")
                             print("'0', '1', '2', ... to join a room number")
+                            print("'q' to quit game")
                             return
 
             except KeyboardInterrupt:
@@ -255,7 +265,7 @@ class Game:
             self.connectionTTL += self.connectionClock.tick()
 
             # If we aren't, then change our state after 10 seconds depending if we are a host
-            if self.connectionTTL >= 5000:
+            if self.connectionTTL >= 10000:
                 self.connectionTTL = 0
                 if self.isHost:
                     pygame.quit()
@@ -275,6 +285,7 @@ class Game:
                     print("'h' to host a room")
                     print("'v' to view available rooms")
                     print("'0', '1', '2', ... to join a room number")
+                    print("'q' to quit game")
 
             # If playing, continuously send information to other person
             # TODO: Send gameboard
@@ -333,6 +344,7 @@ class Game:
                                 print("'h' to host a room")
                                 print("'v' to view available rooms")
                                 print("'0', '1', '2', ... to join a room number")
+                                print("'q' to quit game")
 
                                 return
 
@@ -387,6 +399,8 @@ class Game:
                     # Block and wait for other side to respond
                     self.clock.tick()
                     timer = 0
+                    
+                    print('Sending challenge request...')
 
                     response = ['ResultChallenge', Global.player.getName()]
                     packet = pickle.dumps(response)
@@ -433,6 +447,7 @@ class Game:
                     print("'h' to host a room")
                     print("'v' to view available rooms")
                     print("'0', '1', '2', ... to join a room number")
+                    print("'q' to quit game")
 
                 else:
                     print('Invalid command')
