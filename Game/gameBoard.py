@@ -31,13 +31,14 @@ class gameBoard():
         self.playernamelength = len(Global.player.getName())
         self.opponentnamelength = len(Global.opponent.getName())
         '''
-        self.pressed_time = 0
         self.pressedClock = pygame.time.Clock()
         self.playerName = self.font.render('name', 1, (255,255,255))
         self.opponentName = self.font.render(('name'), 1, (255,255,255))
         self.playernamelength = len('name')
         self.opponentnamelength = len('name')
         self.clock = pygame.time.Clock()
+        self.clock3 = pygame.time.Clock()
+        self.number_count=0
         # initialize the pygame module
         pygame.init()
 
@@ -189,10 +190,17 @@ class gameBoard():
                         break
         return True
 
+    def drawNumber(self,n):
+        print("dolan")
+        self.screen.fill(0,0,0)
+        if(n == 0):
+            self.screen.blit( self.font.render("GO!",1,(255,255,255)),(5*self.sS,10*self.sS))
+            return
+        self.screen.blit( self.font.render("Game starts in + :"+str(n),1,(255,255,255)),(2*self.sS,10*self.sS))
     def run(self):
         if self.quit:
             return
-        time_passed = pygame.time.get_ticks()
+
         # event handling, gets all event from the eventqueue
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -288,28 +296,38 @@ class gameBoard():
                 Global.SoundManager.playsound('switch')
                 self.timer2 = 0
             self.keys[7]=False
-        self.current = self.grav.fall(self.current,self.grid,self.timer)
-        self.getPrevBlocks(self.current)
-        self.update()
-
-        if self.grid.lose:
-            self.quit = True
-            pygame.quit()
-            Global.Game.setState('Result')
-            response = ['PlayingLose']
-            packet = pickle.dumps(response)
-            Global.NetworkManager.getSocket().sendto(bytes(packet), (Global.opponent.getAddr(), 6969))
+        self.number_count += self.clock3.tick()
+        print(self.number_count)
+        if(self.number_count<4000):
+            print('dolan')
+            self.update()
+            self.font = pygame.font.SysFont("ComicSans",51)
+            self.drawNumber(3-int(self.number_count/1000))
+            self.font = pygame.font.SysFont("ComicSans",21)
             
-            print('You lost!')
-            print()
-            print('Switched state to Result')
-            print('Instructions:')
-            if Global.Game.getIsHost():
-                print("'Esc' to leave as host")
-            else:
-                print("'c' to challenge host")
-                print("'l' to leave to lobby")
-            return
+        else:
+            self.current = self.grav.fall(self.current,self.grid,self.timer)
+            self.getPrevBlocks(self.current)
+            self.update()
+    
+            if self.grid.lose:
+                self.quit = True
+                pygame.quit()
+                Global.Game.setState('Result')
+                response = ['PlayingLose']
+                packet = pickle.dumps(response)
+                Global.NetworkManager.getSocket().sendto(bytes(packet), (Global.opponent.getAddr(), 6969))
+                
+                print('You lost!')
+                print()
+                print('Switched state to Result')
+                print('Instructions:')
+                if Global.Game.getIsHost():
+                    print("'Esc' to leave as host")
+                else:
+                    print("'c' to challenge host")
+                    print("'l' to leave to lobby")
+                return
 
 
 if __name__ == '__main__':    
