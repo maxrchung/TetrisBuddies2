@@ -18,7 +18,7 @@ class gravity:
             if self._dropTime > 300 :
                 self._dropTime -= self._increment
         elif (self._landing == True and pygame.time.get_ticks() -
-              self._time > 300):
+              self._time > 300) :
             self._landing = False
             block = cells.place(block)
             self._time = pygame.time.get_ticks()
