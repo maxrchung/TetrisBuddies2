@@ -69,6 +69,16 @@ class NetworkManager:
     def getMessageQueue(self): return self.messageQueue
     def getMessageLock(self): return self.messageLock
 
+    # Disconnect networking elements
+    def disconnect(self):
+        # Send a disconnect packet to yourself
+        response = ['Disconnect']
+        packet = pickle.dumps(response)
+        self.socket.sendto(bytes(packet), (self.host, 6969))
+
+        # Wait until the messageThread is finished
+        self.messageThread.join()
+
     # Receives packets(messages) and puts them into queue
     def checkForMessages(self):
         while Global.Game.getIsRunning():
@@ -79,6 +89,12 @@ class NetworkManager:
             pickledData, addr = self.socket.recvfrom(4096)
             data = pickle.loads(pickledData)
 
+            command = data[0]
+
+            if command == 'Disconnect':
+                self.socket.shutdown(SHUT_RDWR)
+                self.socket.close()
+
             # Skip over packets if we have the same addresses
             if self.host == addr[0]:
                 continue
@@ -88,8 +104,6 @@ class NetworkManager:
             # thread, information could be printed out of nowhere and mess
             # up your current console input/display
             # print('Received packet:', data, addr)
-
-            command = data[0]
 
             # Remember to lock so that we don't run into conflict accessing it
             self.messageLock.acquire()
