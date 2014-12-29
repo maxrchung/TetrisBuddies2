@@ -22,6 +22,8 @@ class gameBoard():
         self.quit = False
         self.playerName = self.font.render(Global.player.getName(), 1, (255,255,255))
         self.opponentName = self.font.render(Global.opponent.getName(), 1, (255,255,255))
+        self.playernamelength = len(Global.player.getName())
+        self.opponentnamelength = len(Global.opponent.getName())
         # initialize the pygame module
         pygame.init()
 
@@ -45,8 +47,8 @@ class gameBoard():
 
     def update(self):
         self.screen.fill((55,55,55)) #clear screen
-        self.screen.blit(self.playerName, (3*self.sS,self.sS))
-        self.screen.blit(self.opponentName, (20*self.sS,self.sS))
+        self.screen.blit(self.playerName, (5*self.sS - .5*self.playernamelength*7,self.sS))
+        self.screen.blit(self.opponentName, (5*self.sS - .5*self.opponentnamelength*7,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
         self.screen.blit(bkg,(self.col*self.sS,0))
         self.drawBlock(self.current) #draws current block
