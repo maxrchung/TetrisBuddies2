@@ -21,6 +21,7 @@ class gravity:
               self._time > 300) :
             timer = 0
             self._landing = False
-            block = cells.place(block)
+            if cells.checkCol(block) != False:
+                block = cells.place(block)
             self._time = pygame.time.get_ticks()
         return block
