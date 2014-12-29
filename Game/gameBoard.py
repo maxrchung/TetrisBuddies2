@@ -57,7 +57,7 @@ class gameBoard():
         self.drawGhost(self.current)
         self.drawBlock(self.grid.next)
         self.drawBlock(self.grid.next0)
-        if(self.timer < 500):
+        if(self.timer < 25500):
             self.fadeInBlock(self.grid.next1, self.timer)
         else:
             self.drawBlock(self.grid.next1)
@@ -74,9 +74,9 @@ class gameBoard():
                 if blk.array[x][y]:
                     self.screen.blit(image,((x+blk.x)*self.sS,(y+blk.y)*self.sS))
     def fadeInBlock(self,blk,time):
-        image = pygae.image.load(blk.image)
+        image = pygame.image.load(blk.image)
         image.convert_alpha()
-        image.set_alpha(int(time/2))
+        image.set_alpha(int(time/100))
         for x in range(0,4):
                 for y in range(0,4):
                     if blk.array[x][y]:
