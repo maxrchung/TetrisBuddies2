@@ -233,7 +233,6 @@ class gameBoard():
                 self.current.rotate('R')
             self.keys[0]=False
         elif self.keys[1] and self.pressedClock.tick()>50:
-            self.pressed_time = 0
             if self.grid.checkCol(self.current)==False:
                 self.current.y+=1
             else:
