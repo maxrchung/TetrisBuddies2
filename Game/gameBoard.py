@@ -16,6 +16,9 @@ class gameBoard():
         self.row = 20
         self.sS = 32
         self.timer = 0
+        self.timer2 = 0
+        self.clock2 = pygame.time.Clock()
+        self.pressed = False
         self.grid = cells(self.col,self.row)
         self.opponentGrid = cells(self.col,self.row)
         self.current = self.grid.next.moveIn()
@@ -28,11 +31,13 @@ class gameBoard():
         self.playernamelength = len(Global.player.getName())
         self.opponentnamelength = len(Global.opponent.getName())
         '''
-
+        self.pressed_time = 0
+        self.pressedClock = pygame.time.Clock()
         self.playerName = self.font.render('name', 1, (255,255,255))
         self.opponentName = self.font.render(('name'), 1, (255,255,255))
         self.playernamelength = len('name')
         self.opponentnamelength = len('name')
+        self.clock = pygame.time.Clock()
         # initialize the pygame module
         pygame.init()
 
@@ -51,7 +56,7 @@ class gameBoard():
         self.saved = None
 
     def getPrevBlocks(self,blk):
-        if len(self.prevPos) < 20:
+        if len(self.prevPos) < 8:
             self.prevPos.append(blk.clone())
         else:
             del(self.prevPos[0])
@@ -62,24 +67,31 @@ class gameBoard():
     def setOpponentGrid(self, newGrid): self.opponentGrid = newGrid
 
     def update(self):
-        self.timer += pygame.time.get_ticks()
         self.screen.fill((55,55,55)) #clear screen
         self.screen.blit(self.playerName, (5*self.sS - .5*self.playernamelength*7,self.sS))
         self.screen.blit(self.opponentName, (21*self.sS - .5*self.opponentnamelength*7,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
         self.screen.blit(bkg,(self.col*self.sS,0))
         for b in self.prevPos:
-            self.fadeInBlock(b,500)
+            self.fadeInBlock(b,50)
         self.drawBlock(self.current) #draws current block
         self.drawGhost(self.current)
         self.drawBlock(self.grid.next)
         self.drawBlock(self.grid.next0)
-        if(self.timer < 25500):
+        
+        if(self.timer < 2550):
+            self.timer += self.clock.tick()
             self.fadeInBlock(self.grid.next1, self.timer)
         else:
             self.drawBlock(self.grid.next1)
-        if(self.saved!=None):
-            self.drawBlock(self.saved)
+        if self.saved != None:
+            if(self.timer2 < 2550):
+                self.timer2 += self.clock2.tick()
+                self.fadeInBlock(self.saved, self.timer2)
+            else:
+                self.drawBlock(self.saved)
+        self.clock.tick()
+        self.clock2.tick()
         self.drawgrid(self.grid, 0)
         self.drawgrid(self.opponentGrid, 1)
         pygame.display.flip() #updates self.screen
@@ -93,7 +105,7 @@ class gameBoard():
     def fadeInBlock(self,blk,time):
         image = pygame.image.load(blk.image)
         image.convert_alpha()
-        image.set_alpha(int(time/100))
+        image.set_alpha(int(time/10))
         for x in range(0,4):
                 for y in range(0,4):
                     if blk.array[x][y]:
@@ -180,6 +192,7 @@ class gameBoard():
     def run(self):
         if self.quit:
             return
+        time_passed = pygame.time.get_ticks()
         # event handling, gets all event from the eventqueue
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -199,6 +212,24 @@ class gameBoard():
                     self.keys[6]=True
                 elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                     self.keys[7]=True
+            if event.type == pygame.KEYUP:
+                self.pressed_time = 0 
+                if event.key==pygame.K_t or event.key==pygame.K_z:
+                    self.keys[0]=False
+                elif event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                    self.keys[1]=False
+                elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                    self.keys[2]=False
+                elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
+                    self.keys[3]=False
+                elif event.key==pygame.K_w or event.key==pygame.K_UP:
+                    self.keys[4]=False
+                elif event.key==pygame.K_r:
+                    self.keys[5]=False
+                elif event.key==pygame.K_SPACE:
+                    self.keys[6]=False
+                elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                    self.keys[7]=False
             # only do something if the event is of type QUIT
             elif event.type == pygame.QUIT:
                 # change the value to False, to exit the main loop
@@ -208,24 +239,21 @@ class gameBoard():
             if self.flipNudge(self.current,"R") != False:
                 self.current.rotate('R')
             self.keys[0]=False
-        elif self.keys[1]:
+        elif self.keys[1] and self.pressedClock.tick()>50:
             if self.grid.checkCol(self.current)==False:
                 self.current.y+=1
             else:
                 self.grid.swapped = False
                 self.current = self.grid.place(self.current)
                 self.timer = 0
-            self.keys[1]=False
-        elif self.keys[2]:
+        elif self.keys[2]and self.pressedClock.tick()>50:
             if (self.current.x+self.current.left()>0
                 and self.sideCol(self.current, -1)==False):
                 self.current.x-=1
-            self.keys[2]=False
-        elif self.keys[3]:
+        elif self.keys[3]and self.pressedClock.tick()>50:
             if (self.current.x+self.current.right()+1<self.col
                 and self.sideCol(self.current, 1)==False):
                 self.current.x+=1
-            self.keys[3]=False
         elif self.keys[4]:
             if self.flipNudge(self.current,"L") != False:
                 self.current.rotate('L')
@@ -249,6 +277,7 @@ class gameBoard():
                 self.grid.next = block()
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
+                self.timer2 = 0
             elif self.grid.swapped==False:
                 temp = self.current
                 self.current = self.saved.moveIn()
@@ -257,8 +286,9 @@ class gameBoard():
                 self.saved = temp.save()
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
+                self.timer2 = 0
             self.keys[7]=False
-        self.current = self.grav.fall(self.current,self.grid)
+        self.current = self.grav.fall(self.current,self.grid,self.timer)
         self.getPrevBlocks(self.current)
         self.update()
 
