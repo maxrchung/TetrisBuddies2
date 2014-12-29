@@ -26,7 +26,7 @@ class soundmanager():
             sound = pygame.mixer.Sound('tetriscomplete.wav')
             sound.play()
         elif soundname=='youfail':
-            sound = pygame.mixer.Sound('YouFail.wav')
+            sound = pygame.mixer.Sound('youfail.wav')
             sound.play()
         else:
             print("WHAT THE FUCK I CAN'T FIND THE SOUND FILE HELP!!!!")

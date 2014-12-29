@@ -196,7 +196,7 @@ class gameBoard():
         return True
 
     def drawNumber(self,n):
-        print("dolan")
+        # print("dolan")
         if(n == 0):
             self.screen.blit( self.font.render("GO!",1,(255,255,255)),(5*self.sS,10*self.sS))
             return
@@ -228,22 +228,22 @@ class gameBoard():
                 self.pressed_time = 0 
                 if event.key==pygame.K_t or event.key==pygame.K_z:
                     self.keys[0]=False
-                elif event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                if event.key==pygame.K_s or event.key==pygame.K_DOWN:
                     self.keys[1]=False
-                elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                if event.key==pygame.K_a or event.key==pygame.K_LEFT:
                     self.keys[2]=False
-                elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
+                if event.key==pygame.K_d or event.key==pygame.K_RIGHT:
                     self.keys[3]=False
-                elif event.key==pygame.K_w or event.key==pygame.K_UP:
+                if event.key==pygame.K_w or event.key==pygame.K_UP:
                     self.keys[4]=False
-                elif event.key==pygame.K_r:
+                if event.key==pygame.K_r:
                     self.keys[5]=False
-                elif event.key==pygame.K_SPACE:
+                if event.key==pygame.K_SPACE:
                     self.keys[6]=False
-                elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                     self.keys[7]=False
             # only do something if the event is of type QUIT
-            elif event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 # change the value to False, to exit the main loop
                 running = False
 
@@ -302,9 +302,9 @@ class gameBoard():
                 self.timer2 = 0
             self.keys[7]=False
         self.number_count += self.clock3.tick()
-        print(self.number_count)
+        # print(self.number_count)
         if(self.number_count<4000):
-            print('dolan')
+            # print('dolan')
             self.update()
             self.font = pygame.font.SysFont("ComicSans",51)
             self.drawNumber(3-int(self.number_count/1000))
