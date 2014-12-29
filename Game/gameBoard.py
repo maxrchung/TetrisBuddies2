@@ -100,7 +100,7 @@ class gameBoard():
         self.clock2.tick()
         self.drawgrid(self.grid, 0)
         self.drawgrid(self.opponentGrid, 1)
-        pygame.display.flip() #updates self.screen
+        
     def drawBlock(self,blk):
         image = pygame.image.load(blk.image)
         image.set_alpha(255)
@@ -198,54 +198,55 @@ class gameBoard():
     def drawNumber(self,n):
         # print("dolan")
         if(n == 0):
-            self.screen.blit( self.font.render("GO!",1,(255,255,255)),(5*self.sS,10*self.sS))
+            self.screen.blit( self.font.render("GO!",1,(255,255,255)),(4*self.sS,10*self.sS))
             return
-        self.screen.blit( self.font.render("Game starts in + :"+str(n),1,(255,255,255)),(2*self.sS,10*self.sS))
+        self.screen.blit( self.font.render("Game starts in: "+str(n),1,(255,255,255)),(0.5*self.sS,10*self.sS))
     def run(self):
         if self.quit:
             return
 
         # event handling, gets all event from the eventqueue
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key==pygame.K_t or event.key==pygame.K_z:
-                    self.keys[0]=True
-                if event.key==pygame.K_s or event.key==pygame.K_DOWN:
-                    self.keys[1]=True
-                if event.key==pygame.K_a or event.key==pygame.K_LEFT:
-                    self.keys[2]=True
-                if event.key==pygame.K_d or event.key==pygame.K_RIGHT:
-                    self.keys[3]=True
-                if event.key==pygame.K_w or event.key==pygame.K_UP:
-                    self.keys[4]=True
-                if event.key==pygame.K_r:
-                    self.keys[5]=True
-                if event.key==pygame.K_SPACE:
-                    self.keys[6]=True
-                if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
-                    self.keys[7]=True
-            if event.type == pygame.KEYUP:
-                self.pressed_time = 0 
-                if event.key==pygame.K_t or event.key==pygame.K_z:
-                    self.keys[0]=False
-                if event.key==pygame.K_s or event.key==pygame.K_DOWN:
-                    self.keys[1]=False
-                if event.key==pygame.K_a or event.key==pygame.K_LEFT:
-                    self.keys[2]=False
-                if event.key==pygame.K_d or event.key==pygame.K_RIGHT:
-                    self.keys[3]=False
-                if event.key==pygame.K_w or event.key==pygame.K_UP:
-                    self.keys[4]=False
-                if event.key==pygame.K_r:
-                    self.keys[5]=False
-                if event.key==pygame.K_SPACE:
-                    self.keys[6]=False
-                if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
-                    self.keys[7]=False
-            # only do something if the event is of type QUIT
-            if event.type == pygame.QUIT:
-                # change the value to False, to exit the main loop
-                running = False
+            if(self.number_count>4000):
+                if event.type == pygame.KEYDOWN:
+                    if event.key==pygame.K_t or event.key==pygame.K_z:
+                        self.keys[0]=True
+                    if event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                        self.keys[1]=True
+                    if event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                        self.keys[2]=True
+                    if event.key==pygame.K_d or event.key==pygame.K_RIGHT:
+                        self.keys[3]=True
+                    if event.key==pygame.K_w or event.key==pygame.K_UP:
+                        self.keys[4]=True
+                    if event.key==pygame.K_r:
+                        self.keys[5]=True
+                    if event.key==pygame.K_SPACE:
+                        self.keys[6]=True
+                    if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                        self.keys[7]=True
+                if event.type == pygame.KEYUP:
+                    self.pressed_time = 0 
+                    if event.key==pygame.K_t or event.key==pygame.K_z:
+                        self.keys[0]=False
+                    if event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                        self.keys[1]=False
+                    if event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                        self.keys[2]=False
+                    if event.key==pygame.K_d or event.key==pygame.K_RIGHT:
+                        self.keys[3]=False
+                    if event.key==pygame.K_w or event.key==pygame.K_UP:
+                        self.keys[4]=False
+                    if event.key==pygame.K_r:
+                        self.keys[5]=False
+                    if event.key==pygame.K_SPACE:
+                        self.keys[6]=False
+                    if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                        self.keys[7]=False
+                # only do something if the event is of type QUIT
+                if event.type == pygame.QUIT:
+                    # change the value to False, to exit the main loop
+                    running = False
 
         if self.keys[0]:
             if self.flipNudge(self.current,"R") != False:
@@ -333,6 +334,7 @@ class gameBoard():
                     print("'c' to challenge host")
                     print("'l' to leave to lobby")
                 return
+        pygame.display.flip() #updates self.screen
 
 
 if __name__ == '__main__':    
