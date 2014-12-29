@@ -249,9 +249,9 @@ class Game:
                         self.connectionClock.tick()
                         self.connectionTTL = 0
                         self.state = 'Playing'
-                        Global.GameBoard = gameBoard()
                         Global.opponent.setName(data[1])
                         Global.opponent.setAddr(addr[0])
+                        Global.GameBoard = gameBoard()
 
                     elif response == 'n':
                         validInput = True
