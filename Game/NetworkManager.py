@@ -38,7 +38,7 @@ class NetworkManager:
         self.host = gethostbyname(gethostname())
 
         # bind() tells the socket to receive messages on port 6969
-        self.socket.bind(('', 6969))
+        self.socket.bind((self.host, 6969))
 
         # Setting some more specific socket options so that
         # we can broadcast messages to all celients in the LAN
