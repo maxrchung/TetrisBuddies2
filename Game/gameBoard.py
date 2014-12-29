@@ -15,6 +15,7 @@ class gameBoard():
         self.col = 10
         self.row = 20
         self.sS = 32
+        self.timer = 0
         self.grid = cells(self.col,self.row)
         self.opponentGrid = cells(self.col,self.row)
         self.current = self.grid.next.moveIn()
@@ -46,6 +47,7 @@ class gameBoard():
     def setOpponentGrid(self, newGrid): self.opponentGrid = newGrid
 
     def update(self):
+        self.timer += pygame.time.get_ticks()
         self.screen.fill((55,55,55)) #clear screen
         self.screen.blit(self.playerName, (5*self.sS - .5*self.playernamelength*7,self.sS))
         self.screen.blit(self.opponentName, (5*self.sS - .5*self.opponentnamelength*7,self.sS))
@@ -55,7 +57,10 @@ class gameBoard():
         self.drawGhost(self.current)
         self.drawBlock(self.grid.next)
         self.drawBlock(self.grid.next0)
-        self.drawBlock(self.grid.next1)
+        if(self.timer < 500):
+            self.fadeInBlock(self.grid.next1, self.timer)
+        else:
+            self.drawBlock(self.grid.next1)
         if(self.saved!=None):
             self.drawBlock(self.saved)
         self.drawgrid(self.grid, 0)
@@ -68,6 +73,14 @@ class gameBoard():
             for y in range(0,4):
                 if blk.array[x][y]:
                     self.screen.blit(image,((x+blk.x)*self.sS,(y+blk.y)*self.sS))
+    def fadeInBlock(self,blk,time):
+        image = pygae.image.load(blk.image)
+        image.convert_alpha()
+        image.set_alpha(int(time/2))
+        for x in range(0,4):
+                for y in range(0,4):
+                    if blk.array[x][y]:
+                        self.screen.blit(image,((x+blk.x)*self.sS,(y+blk.y)*self.sS))
     def drawGhost(self,blk):
         image = pygame.image.load(blk.image)
         ghostBlock = blk.clone()
@@ -96,6 +109,7 @@ class gameBoard():
         while 1:
             if(self.grid.checkCol(blk)):
                 blk = self.grid.place(blk)
+                self.timer = 0
                 Global.SoundManager.playsound('placed')
                 return blk
             blk.y+=1
@@ -183,6 +197,7 @@ class gameBoard():
             else:
                 self.grid.swapped = False
                 self.current = self.grid.place(self.current)
+                self.timer = 0
             self.keys[1]=False
         elif self.keys[2]:
             if (self.current.x+self.current.left()>0
