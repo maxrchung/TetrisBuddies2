@@ -8,9 +8,9 @@ class soundmanager():
         # 200 MB of music is too much to work with, so I limited it to
         # 1 background track. Chose madoka since it's the smallest file...
         # and probably the most relevant
-        madoka = pygame.mixer.music.load('pinkpanther.wav')
+        #madoka = pygame.mixer.music.load('pinkpanther.wav')
         # -1 to indicate repeat forever
-        pygame.mixer.music.play(-1)
+        #pygame.mixer.music.play(-1)
 
     def playsound(self, soundname):
         if soundname=='singleline':

@@ -20,8 +20,8 @@ class gameBoard():
         self.current = self.grid.next.moveIn()
         self.grid.nextBlocks(self.current)
         self.quit = False
-        self.playerName = self.font.render(Global.player, 1, (255,255,255))
-        self.opponentName = self.font.render(Global.opponent, 1, (255,255,255))
+        self.playerName = self.font.render(Global.player.getname(), 1, (255,255,255))
+        self.opponentName = self.font.render(Global.opponent.getname(), 1, (255,255,255))
         # initialize the pygame module
         pygame.init()
 
