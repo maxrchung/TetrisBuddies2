@@ -68,11 +68,16 @@ class gameBoard():
     def setOpponentGrid(self, newGrid): self.opponentGrid = newGrid
 
     def update(self):
-        self.screen.fill((55,55,55)) #clear screen
+        background = pygame.image.load("background.png")
+        self.screen.blit(background, (0,0))
+
+        gridLines = pygame.image.load("grid.png")
+        self.screen.blit(gridLines, (0,0))
+
         self.screen.blit(self.playerName, (5*self.sS - .5*self.playernamelength*7,self.sS))
         self.screen.blit(self.opponentName, (21*self.sS - .5*self.opponentnamelength*7,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
-        self.screen.blit(bkg,(self.col*self.sS,0))
+        self.screen.blit(bkg,(self.col*self.sS-64,0))
         for b in self.prevPos:
             self.fadeInBlock(b,50)
         self.drawBlock(self.current) #draws current block
@@ -192,7 +197,6 @@ class gameBoard():
 
     def drawNumber(self,n):
         print("dolan")
-        self.screen.fill(0,0,0)
         if(n == 0):
             self.screen.blit( self.font.render("GO!",1,(255,255,255)),(5*self.sS,10*self.sS))
             return
@@ -206,19 +210,19 @@ class gameBoard():
             if event.type == pygame.KEYDOWN:
                 if event.key==pygame.K_t or event.key==pygame.K_z:
                     self.keys[0]=True
-                elif event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                if event.key==pygame.K_s or event.key==pygame.K_DOWN:
                     self.keys[1]=True
-                elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                if event.key==pygame.K_a or event.key==pygame.K_LEFT:
                     self.keys[2]=True
-                elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
+                if event.key==pygame.K_d or event.key==pygame.K_RIGHT:
                     self.keys[3]=True
-                elif event.key==pygame.K_w or event.key==pygame.K_UP:
+                if event.key==pygame.K_w or event.key==pygame.K_UP:
                     self.keys[4]=True
-                elif event.key==pygame.K_r:
+                if event.key==pygame.K_r:
                     self.keys[5]=True
-                elif event.key==pygame.K_SPACE:
+                if event.key==pygame.K_SPACE:
                     self.keys[6]=True
-                elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                     self.keys[7]=True
             if event.type == pygame.KEYUP:
                 self.pressed_time = 0 
@@ -247,26 +251,27 @@ class gameBoard():
             if self.flipNudge(self.current,"R") != False:
                 self.current.rotate('R')
             self.keys[0]=False
-        elif self.keys[1] and self.pressedClock.tick()>50:
-            if self.grid.checkCol(self.current)==False:
-                self.current.y+=1
-            else:
-                self.grid.swapped = False
-                self.current = self.grid.place(self.current)
-                self.timer = 0
-        elif self.keys[2]and self.pressedClock.tick()>50:
-            if (self.current.x+self.current.left()>0
-                and self.sideCol(self.current, -1)==False):
-                self.current.x-=1
-        elif self.keys[3]and self.pressedClock.tick()>50:
-            if (self.current.x+self.current.right()+1<self.col
-                and self.sideCol(self.current, 1)==False):
-                self.current.x+=1
-        elif self.keys[4]:
+        if self.pressedClock.tick() > 50:
+            if self.keys[1]:
+                if self.grid.checkCol(self.current)==False:
+                    self.current.y+=1
+                else:
+                    self.grid.swapped = False
+                    self.current = self.grid.place(self.current)
+                    self.timer = 0
+            if self.keys[2]:
+                if (self.current.x+self.current.left()>0
+                    and self.sideCol(self.current, -1)==False):
+                    self.current.x-=1
+            if self.keys[3]:
+                if (self.current.x+self.current.right()+1<self.col
+                    and self.sideCol(self.current, 1)==False):
+                    self.current.x+=1
+        if self.keys[4]:
             if self.flipNudge(self.current,"L") != False:
                 self.current.rotate('L')
             self.keys[4]=False
-        elif self.keys[5]:
+        if self.keys[5]:
             self.current = self.grid.next.moveIn()
             self.grid.next = block()
             self.grid.addLines(1)
@@ -274,11 +279,11 @@ class gameBoard():
             self.quit=True
             return
             self.keys[5] = False
-        elif self.keys[6]:
+        if self.keys[6]:
             self.current = self.hardDrop(self.current)
             self.grid.swapped = False
             self.keys[6]=False
-        elif self.keys[7]:
+        if self.keys[7]:
             if self.saved == None:
                 self.saved = self.current.save()
                 self.current = self.grid.next.moveIn()
