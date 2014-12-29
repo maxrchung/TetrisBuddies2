@@ -31,7 +31,14 @@ class cells:
                     self.score+=1337
                     self.clear(y)
                     lines_cleared+=1
+        
+        # Play sound if cleared lines
+        if lines_cleared >= 4: # I mean... better safe than sorry
+            Global.SoundManager.playsound('fourline')
+        elif lines_cleared >= 1:
+            Global.SoundManager.playsound('singleline')
 
+        # Send a line if cleared more than 2
         if lines_cleared >= 2:
             response = ['PlayingLine', lines_cleared - 1]
             packet = pickle.dumps(response)
@@ -49,6 +56,9 @@ class cells:
                         self.image[x][b]=self.default
                     if b == self.row-1 and x == r:
                         self.filled[x][b] = 0
+
+        # Play sound
+        Global.SoundManager.playsound('youfail')
     
     def nextBlocks(self,blk):
         self.next = block()

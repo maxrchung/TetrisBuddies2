@@ -87,6 +87,8 @@ class cells:
         self.rowFilled()
         blk = self.next.moveIn()
         self.nextBlocks(blk)
+        Global.SoundManager.playsound('placed')
+
         for x in range (self.col):
             if(self.filled[x][0]):
                 self.lose = True

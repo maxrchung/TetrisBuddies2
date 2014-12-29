@@ -19,8 +19,8 @@ class soundmanager():
         elif soundname=='switch':
             sound = pygame.mixer.Sound('switch.wav')
             sound.play()
-        elif soundname=='harddrop':
-            sound = pygame.mixer.Sound('harddrop.wav')
+        elif soundname=='placed':
+            sound = pygame.mixer.Sound('placed.wav')
             sound.play()
         elif soundname=='fourline':
             sound = pygame.mixer.Sound('tetriscomplete.wav')

@@ -88,7 +88,7 @@ class gameBoard():
         while 1:
             if(self.grid.checkCol(blk)):
                 blk = self.grid.place(blk)
-                Global.SoundManager.playsound('harddrop')
+                Global.SoundManager.playsound('placed')
                 return blk
             blk.y+=1
     def sideCol(self,blk,side):
@@ -239,12 +239,10 @@ class gameBoard():
                 print("'c' to challenge host")
                 print("'l' to leave to lobby")
             return
+
 '''
 if __name__ == '__main__':    
     g = gameBoard()
     while True:
         g.run()
 '''
-
-
-
