@@ -228,7 +228,7 @@ class gameBoard():
         for event in pygame.event.get():
             if(self.number_count>4000):
                 if event.type == pygame.KEYDOWN:
-                    self.pressedTimer = 101
+                    self.pressedTimer = 96
                     if event.key==pygame.K_t or event.key==pygame.K_z:
                         self.keys[0]=True
                     elif event.key==pygame.K_w or event.key==pygame.K_UP:
@@ -247,7 +247,7 @@ class gameBoard():
                     elif event.key==pygame.K_r:
                         self.keys[5]=True
                 elif event.type == pygame.KEYUP:
-                    self.pressedTimer = 101
+                    self.pressedTimer = 96
                     if event.key==pygame.K_t or event.key==pygame.K_z:
                         self.keys[0]=False
                     elif event.key==pygame.K_w or event.key==pygame.K_UP:
@@ -280,7 +280,7 @@ class gameBoard():
                 self.keys[4]=False
 
         self.pressedTimer += self.pressedClock.tick()
-        if self.pressedTimer >= 100:
+        if self.pressedTimer >= 72:
             if self.keys[1]:
                 if self.grid.checkCol(self.current)==False:
                     self.current.y+=1
@@ -305,6 +305,7 @@ class gameBoard():
             self.grid.next = block()
             self.grid.addLines(1)
             pygame.quit()
+            Global.GameBoard = None
             self.quit=True
             return
             self.keys[5] = False
@@ -352,6 +353,7 @@ class gameBoard():
             if self.grid.lose:
                 self.quit = True
                 pygame.quit()
+                Global.GameBoard = None
                 Global.Game.setState('Result')
                 response = ['PlayingLose']
                 packet = pickle.dumps(response)

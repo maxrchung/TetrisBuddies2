@@ -271,6 +271,7 @@ class Game:
                 self.connectionTTL = 0
                 if self.isHost:
                     pygame.quit()
+                    Global.GameBoard = None
                     self.state = 'Hosting'
                     print('Lost connection with challenger')
                     print()
@@ -279,6 +280,7 @@ class Game:
                     print("'Esc' to leave as host")
                 else:
                     pygame.quit()
+                    Global.GameBoard = None
                     self.state = 'Lobby'
                     print('Lost connection with host')
                     print()
@@ -296,7 +298,9 @@ class Game:
             Global.NetworkManager.getSocket().sendto(bytes(packet), (Global.opponent.getAddr(), 6969))
             # print('Sent packet', response, Global.opponent.getAddr())
 
+            Global.NetworkManager.getMessageLock().acquire()
             Global.GameBoard.run()
+            Global.NetworkManager.getMessageLock().release()
 
             # If we have a PlayingWin or PlayingLose message, then we deal with it here
             while Global.NetworkManager.getMessageQueue():
@@ -310,6 +314,7 @@ class Game:
 
                 if command == 'PlayingLose':
                     pygame.quit()
+                    Global.GameBoard = None
                     self.state = 'Result'
                     print('You won!')
                     print()
