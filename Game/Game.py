@@ -109,7 +109,7 @@ class Game:
                 else:
                     print('Rooms:')
                     for roomIndex in range(len(self.roomList)):
-                        print('Room', str(roomIndex), '-', self.roomList[roomIndex][0], '-', self.roomList[roomIndex][1])
+                        print('Room', str(roomIndex), '-', self.roomList[roomIndex][0])
 
                 # Reset room list so we remove duplicates and offline players
                 self.roomList = []
@@ -151,6 +151,10 @@ class Game:
                     # Block and wait for other side to respond
                     self.clock.tick()
                     timer = 0
+
+                    Global.NetworkManager.getMessageLock().acquire()
+                    Global.NetworkManager.getMessageQueue().clear()
+                    Global.NetworkManager.getMessageLock().release()
 
                     print('Sending challenge request...')
 
@@ -293,14 +297,15 @@ class Game:
 
             # If playing, continuously send information to other person
             # TODO: Send gameboard
-            response = ['PlayingUpdate', Global.GameBoard.getGrid()]
-            packet = pickle.dumps(response)
-            Global.NetworkManager.getSocket().sendto(bytes(packet), (Global.opponent.getAddr(), 6969))
-            # print('Sent packet', response, Global.opponent.getAddr())
+            if Global.GameBoard:
+                response = ['PlayingUpdate', Global.GameBoard.getGrid()]
+                packet = pickle.dumps(response)
+                Global.NetworkManager.getSocket().sendto(bytes(packet), (Global.opponent.getAddr(), 6969))
+                # print('Sent packet', response, Global.opponent.getAddr())
 
-            Global.NetworkManager.getMessageLock().acquire()
-            Global.GameBoard.run()
-            Global.NetworkManager.getMessageLock().release()
+                Global.NetworkManager.getMessageLock().acquire()
+                Global.GameBoard.run()
+                Global.NetworkManager.getMessageLock().release()
 
             # If we have a PlayingWin or PlayingLose message, then we deal with it here
             while Global.NetworkManager.getMessageQueue():
@@ -407,6 +412,10 @@ class Game:
                     self.clock.tick()
                     timer = 0
                     
+                    Global.NetworkManager.getMessageLock().acquire()
+                    Global.NetworkManager.getMessageQueue().clear()
+                    Global.NetworkManager.getMessageLock().release()
+
                     print('Sending challenge request...')
 
                     response = ['ResultChallenge', Global.player.getName()]
@@ -437,7 +446,9 @@ class Game:
                                 self.connectionClock.tick()
                                 self.connectionTTL = 0
                                 self.state = 'Playing'
+                                print('...')
                                 Global.GameBoard = gameBoard()
+                                print('xxx')
                                 return
                             else:
                                 continue
