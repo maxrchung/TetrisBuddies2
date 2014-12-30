@@ -23,7 +23,7 @@ class block:
             self._arrangement = block_S
         if r == 6:
             self._arrangement = block_Sq
-        self.image = ("block"+str(r)+".png")
+        self.image = (r)
         self.array = self._arrangement(self.state)
     def moveIn(self):
         self.x = 3

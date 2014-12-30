@@ -22,31 +22,34 @@ class gameBoard():
         self.timer2 = 0
         self.timer3 = -1
         self.clock2 = pygame.time.Clock()
-        self.pressed = False
         self.grid = cells(self.col,self.row)
         self.opponentGrid = cells(self.col,self.row)
         self.current = self.grid.next.moveIn()
         self.grid.nextBlocks(self.current)
         self.quit = False
         self.prevPos = []
-        '''
+
         self.playerName = self.font.render(Global.player.getName(), 1, (255,255,255))
         self.opponentName = self.font.render(Global.opponent.getName(), 1, (255,255,255))
         self.playerNameWidth = self.playerName.get_rect().width
         self.opponentNameWidth = self.opponentName.get_rect().width
+
         '''
         self.playerName = self.font.render('Wax Chug the Gwad', 1, (255,255,255))
         self.opponentName = self.font.render(('name'), 1, (255,255,255))
         self.playerNameWidth = self.playerName.get_rect().width
         self.opponentNameWidth = self.opponentName.get_rect().width
+        '''
 
-        self.pressedClock = pygame.time.Clock()
-        self.pressedTimer = 0
         self.clock = pygame.time.Clock()
         self.clock3 = pygame.time.Clock()
         self.number_count=0
         # initialize the pygame module
         pygame.init()
+
+        # Limiting how fast press can go
+        self.pressedTimer = 0
+        self.pressedClock = pygame.time.Clock()
 
         # initialize soundmanager
         Global.SoundManager = soundmanager()
@@ -63,6 +66,15 @@ class gameBoard():
         self.grav = gravity(1000,5)
         self.saved = None
 
+        self.background = pygame.image.load('background.png')
+        self.gridLines = pygame.image.load("grid.png")
+        self.bkg =pygame.image.load("MaxFaggotry.png")
+        self.boobs = pygame.image.load("boobs.png")
+
+        self.blockImages = []
+        for x in range(8):
+            self.blockImages.append(pygame.image.load('block'+str(x)+'.png'))
+
     def getPrevBlocks(self,blk):
         if len(self.prevPos) < 8:
             self.prevPos.append(blk.clone())
@@ -75,14 +87,9 @@ class gameBoard():
     def setOpponentGrid(self, newGrid): self.opponentGrid = newGrid
 
     def update(self):
-        background = pygame.image.load("background.png")
-        self.screen.blit(background, (0,0))
-
-        gridLines = pygame.image.load("grid.png")
-        self.screen.blit(gridLines, (0,0))
-
-        bkg =pygame.image.load("MaxFaggotry.png")
-        self.screen.blit(bkg,(self.col*self.sS-64,0))
+        self.screen.blit(self.background, (0,0))
+        self.screen.blit(self.gridLines, (0,0))
+        self.screen.blit(self.bkg,(self.col*self.sS-64,0))
         for b in self.prevPos:
             self.fadeInBlock(b,50)
         self.drawBlock(self.current) #draws current block
@@ -107,19 +114,18 @@ class gameBoard():
         self.clock2.tick()
         self.drawgrid(self.grid, 0)
         self.drawgrid(self.opponentGrid, 1)
-        
-        boobs = pygame.image.load("boobs.png")
-        self.screen.blit(boobs, (self.col*self.sS-64,0))
+
+        self.screen.blit(self.boobs, (self.col*self.sS-64,0))
         
     def drawBlock(self,blk):
-        image = pygame.image.load(blk.image)
+        image = self.blockImages[blk.image]
         image.set_alpha(255)
         for x in range(0,4):
             for y in range(0,4):
                 if blk.array[x][y]:
                     self.screen.blit(image,((x+blk.x)*self.sS,(y+blk.y)*self.sS))
     def fadeInBlock(self,blk,time):
-        image = pygame.image.load(blk.image)
+        image = self.blockImages[blk.image]
         image.convert_alpha()
         image.set_alpha(time/500 * 255)
         for x in range(0,4):
@@ -127,7 +133,7 @@ class gameBoard():
                     if blk.array[x][y]:
                         self.screen.blit(image,((x+blk.x)*self.sS,(y+blk.y)*self.sS))
     def drawGhost(self,blk):
-        image = pygame.image.load(blk.image)
+        image = self.blockImages[blk.image]
         ghostBlock = blk.clone()
         image.convert_alpha()
         image.set_alpha(120)
@@ -144,7 +150,7 @@ class gameBoard():
         for x in range (self.col):
             for y in range(self.row+1):
                 if grid.filled[x][y]:
-                    image = pygame.image.load(grid.image[x][y])
+                    image = self.blockImages[grid.image[x][y]]
                     image.set_alpha(255)
                     if isOpponent:
                         self.screen.blit((image),((x+self.col+6)*self.sS,y*self.sS))
@@ -220,39 +226,41 @@ class gameBoard():
         for event in pygame.event.get():
             if(self.number_count>4000):
                 if event.type == pygame.KEYDOWN:
+                    self.pressedTimer = 101
                     if event.key==pygame.K_t or event.key==pygame.K_z:
                         self.keys[0]=True
                     elif event.key==pygame.K_w or event.key==pygame.K_UP:
                         self.keys[4]=True
-                    if event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                    elif event.key==pygame.K_s or event.key==pygame.K_DOWN:
                         self.keys[1]=True
-                    if event.key==pygame.K_SPACE:
+                    elif event.key==pygame.K_SPACE:
                         self.keys[6]=True
-                    if event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                    elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
                         self.keys[2]=True
                     elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
+                        print()
                         self.keys[3]=True
-                    if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                    elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                         self.keys[7]=True
-                    if event.key==pygame.K_r:
+                    elif event.key==pygame.K_r:
                         self.keys[5]=True
-                if event.type == pygame.KEYUP:
-                    self.pressed_time = 0 
+                elif event.type == pygame.KEYUP:
+                    self.pressedTimer = 101
                     if event.key==pygame.K_t or event.key==pygame.K_z:
                         self.keys[0]=False
                     elif event.key==pygame.K_w or event.key==pygame.K_UP:
                         self.keys[4]=False
-                    if event.key==pygame.K_s or event.key==pygame.K_DOWN:
+                    elif event.key==pygame.K_s or event.key==pygame.K_DOWN:
                         self.keys[1]=False
-                    if event.key==pygame.K_SPACE:
+                    elif event.key==pygame.K_SPACE:
                         self.keys[6]=False
-                    if event.key==pygame.K_a or event.key==pygame.K_LEFT:
+                    elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
                         self.keys[2]=False
                     elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
                         self.keys[3]=False
-                    if event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
+                    elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                         self.keys[7]=False
-                    if event.key==pygame.K_r:
+                    elif event.key==pygame.K_r:
                         self.keys[5]=False
                 # only do something if the event is of type QUIT
                 if event.type == pygame.QUIT:
@@ -263,28 +271,32 @@ class gameBoard():
         if self.keys[0]:
             if self.flipNudge(self.current,"R") != False:
                 self.current.rotate('R')
-            self.keys[0]=False
+                self.keys[0]=False
         elif self.keys[4]:
             if self.flipNudge(self.current,"L") != False:
                 self.current.rotate('L')
-            self.keys[4]=False
+                self.keys[4]=False
 
-        if self.pressedClock.tick() > 50:
+        self.pressedTimer += self.pressedClock.tick()
+        if self.pressedTimer >= 100:
             if self.keys[1]:
                 if self.grid.checkCol(self.current)==False:
                     self.current.y+=1
+                    self.pressedTimer = 0
                 else:
                     self.grid.swapped = False
                     self.current = self.grid.place(self.current)
                     self.timer = 0
+                    self.pressedTimer = 0
             if self.keys[2]:
-                if (self.current.x+self.current.left()>0
-                    and self.sideCol(self.current, -1)==False):
+                if self.current.x+self.current.left()>0 and self.sideCol(self.current, -1)==False:
                     self.current.x-=1
+                    self.pressedTimer = 0
             elif self.keys[3]:
-                if (self.current.x+self.current.right()+1<self.col
-                    and self.sideCol(self.current, 1)==False):
+                if self.current.x+self.current.right()+1<self.col and self.sideCol(self.current, 1)==False:
                     self.current.x+=1
+                    self.pressedTimer = 0
+
         if self.keys[5]:
             self.current = self.grid.next.moveIn()
             self.grid.next = block()
@@ -308,6 +320,7 @@ class gameBoard():
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
                 self.timer2 = 0
+                self.keys[7]=False
             elif self.grid.swapped==False:
                 temp = self.current
                 self.current = self.saved.moveIn()
@@ -317,7 +330,7 @@ class gameBoard():
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
                 self.timer2 = 0
-            self.keys[7]=False
+                self.keys[7]=False
         self.number_count += self.clock3.tick()
 
         # print(self.number_count)
