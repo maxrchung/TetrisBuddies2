@@ -104,10 +104,12 @@ class Game:
 
             # Look for rooms
             elif key == 'v':
-                print('Rooms:')
-                for roomIndex in range(len(self.roomList)):
-                    print('Room', str(roomIndex), '-', self.roomList[roomIndex][0], '-', self.roomList[roomIndex][1])
-                print()
+                if(len(self.roomList) == 0):
+                    print("No available rooms, 'v' to refresh")
+                else:
+                    print('Rooms:')
+                    for roomIndex in range(len(self.roomList)):
+                        print('Room', str(roomIndex), '-', self.roomList[roomIndex][0], '-', self.roomList[roomIndex][1])
 
                 # Reset room list so we remove duplicates and offline players
                 self.roomList = []
