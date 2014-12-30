@@ -366,7 +366,6 @@ class gameBoard():
                     print("'c' to challenge host")
                     print("'l' to leave to lobby")
                 return
-        self.shakeScreen.fill((0,0,0))
         if self.grid.shake == True:
             if self.timer3 == -1:
                 self.timer3 = 4
