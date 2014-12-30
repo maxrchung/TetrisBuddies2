@@ -85,6 +85,7 @@ class cells:
         self.next1.y = 11
                         
     def place(self,blk):
+        Global.SoundManager.playsound('placed')
         self.swapped = False
         for x in range(0,4):
             for y in range(0,4):
@@ -94,7 +95,6 @@ class cells:
         self.rowFilled()
         blk = self.next.moveIn()
         self.nextBlocks(blk)
-        Global.SoundManager.playsound('placed')
 
         for x in range (self.col):
             if(self.filled[x][1]):
