@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 
 
-setup(name = 'TetrisBuddy', 
+setup(name = 'TetrisBuddies', 
       version='3.1.4', 
-      description='Single-player Tetris',
-      executables = [Executable(script = 'TetrisBuddy.py', base='Win32GUI')])
+      description='Networked Tetris',
+      executables = [Executable(script = 'TetrisBuddies.py')])
