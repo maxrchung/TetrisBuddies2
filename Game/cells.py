@@ -18,6 +18,7 @@ class cells:
         self.default = image
         self.filled = [[0 for x in range(row+1)] for x in range(col+1)]
         self.image = [[image for x in range(row +1)]for x in range(col+1)]
+        self.shake = False
         for x in range(col+1):
             self.filled[x][row]=1
     def rowFilled(self):
@@ -56,7 +57,7 @@ class cells:
                         self.image[x][b]=self.default
                     if b == self.row-1 and x == r:
                         self.filled[x][b] = 0
-
+        self.shake = True
         # Play sound
         Global.SoundManager.playsound('youfail')
     

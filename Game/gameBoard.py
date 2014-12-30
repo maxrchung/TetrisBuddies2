@@ -19,6 +19,7 @@ class gameBoard():
         self.sS = 32
         self.timer = 0
         self.timer2 = 0
+        self.timer3 = -1
         self.clock2 = pygame.time.Clock()
         self.pressed = False
         self.grid = cells(self.col,self.row)
@@ -51,7 +52,8 @@ class gameBoard():
         # load and set the logo
         pygame.display.set_caption("TetrisBuddies")
         # create a surface on screen that has the size of 240 x 180
-        self.screen = pygame.display.set_mode(((self.col*2+6)*self.sS,self.row*self.sS))
+        self.shakeScreen = pygame.display.set_mode(((self.col*2+6)*self.sS,self.row*self.sS))
+        self.screen = self.shakeScreen.copy()
         # define a variable to control the main loop
         self.running = True
         self.keys = [False, False, False, False,False, False,False,False]
@@ -347,6 +349,18 @@ class gameBoard():
                     print("'c' to challenge host")
                     print("'l' to leave to lobby")
                 return
+        self.shakeScreen.fill((0,0,0))
+        if self.grid.shake == True:
+            if self.timer3 == -1:
+                self.timer3 = 4
+            elif self.timer3 > 1:
+                self.timer3 -= 1
+            else:
+                self.timer3 = -1
+                self.grid.shake = False
+            self.shakeScreen.blit(self.screen, (randint(-20,20),randint(-20,20)))
+        else:
+             self.shakeScreen.blit(self.screen, (0,0))
         pygame.display.flip() #updates self.screen
 
 
