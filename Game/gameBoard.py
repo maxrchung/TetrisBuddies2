@@ -285,9 +285,10 @@ class gameBoard():
                     self.current.y+=1
                     self.pressedTimer = 0
                 else:
-                    self.grid.swapped = False
-                    self.current = self.grid.place(self.current)
-                    self.timer = 0
+                    #self.grid.swapped = False
+                    #self.current = self.grid.place(self.current)
+                    #self.timer = 0
+                    self.current = self.grav.fall(self.current,self.grid,self.timer)
                     self.pressedTimer = 0
             if self.keys[2]:
                 if self.current.x+self.current.left()>0 and self.sideCol(self.current, -1)==False:
