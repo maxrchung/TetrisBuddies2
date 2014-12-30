@@ -37,9 +37,6 @@ class NetworkManager:
         # Gets the IP address of person running this program
         self.host = gethostbyname(gethostname())
 
-        # bind() tells the socket to receive messages on port 6969
-        self.socket.bind((self.host, 6969))
-
         # Setting some more specific socket options so that
         # we can broadcast messages to all celients in the LAN
         self.socket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
@@ -47,6 +44,9 @@ class NetworkManager:
         # Allows us to reuse an address, not entirely sure if needed
         # but probably safer to do so then not
         self.socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+
+        # bind() tells the socket to receive messages on port 6969
+        self.socket.bind((self.host, 6969))
 
         # The socket will receive messages and put them into this queue
         # The queue will then be popped off and the messages will be
