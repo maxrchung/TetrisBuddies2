@@ -14,7 +14,7 @@ class cells:
         self.next0 = None
         self.next1 = None
         self.swapped = False
-        image = ("block7.png")
+        image = 7
         self.default = image
         self.filled = [[0 for x in range(row+1)] for x in range(col+1)]
         self.image = [[image for x in range(row +1)]for x in range(col+1)]
