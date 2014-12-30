@@ -11,7 +11,9 @@ from Soundmanager import *
 class gameBoard():
     def __init__(self):
         pygame.font.init()
-        self.font = pygame.font.SysFont("ComicSans",21)
+        self.font = pygame.font.SysFont("Comic Sans MS",32)
+        self.fontBig = pygame.font.SysFont("Comic Sans MS",64)
+
         self.col = 10
         self.row = 20
         self.sS = 32
@@ -28,14 +30,15 @@ class gameBoard():
         '''
         self.playerName = self.font.render(Global.player.getName(), 1, (255,255,255))
         self.opponentName = self.font.render(Global.opponent.getName(), 1, (255,255,255))
-        self.playernamelength = len(Global.player.getName())
-        self.opponentnamelength = len(Global.opponent.getName())
+        self.playerNameWidth = self.playerName.get_rect().width
+        self.opponentNameWidth = self.opponentName.get_rect().width
         '''
-        self.pressedClock = pygame.time.Clock()
-        self.playerName = self.font.render('name', 1, (255,255,255))
+        self.playerName = self.font.render('qWppppwaaaaaae', 1, (255,255,255))
         self.opponentName = self.font.render(('name'), 1, (255,255,255))
-        self.playernamelength = len('name')
-        self.opponentnamelength = len('name')
+        self.playerNameWidth = self.playerName.get_rect().width
+        self.opponentNameWidth = self.opponentName.get_rect().width
+
+        self.pressedClock = pygame.time.Clock()
         self.clock = pygame.time.Clock()
         self.clock3 = pygame.time.Clock()
         self.number_count=0
@@ -74,8 +77,6 @@ class gameBoard():
         gridLines = pygame.image.load("grid.png")
         self.screen.blit(gridLines, (0,0))
 
-        self.screen.blit(self.playerName, (5*self.sS - .5*self.playernamelength*7,self.sS))
-        self.screen.blit(self.opponentName, (21*self.sS - .5*self.opponentnamelength*7,self.sS))
         bkg =pygame.image.load("MaxFaggotry.png")
         self.screen.blit(bkg,(self.col*self.sS-64,0))
         for b in self.prevPos:
@@ -84,6 +85,8 @@ class gameBoard():
         self.drawGhost(self.current)
         self.drawBlock(self.grid.next)
         self.drawBlock(self.grid.next0)
+        self.screen.blit(self.playerName, (5*self.sS - 0.5*self.playerNameWidth,self.sS-6))
+        self.screen.blit(self.opponentName, (21*self.sS - 0.5*self.opponentNameWidth,self.sS-6))
         
         if(self.timer < 2550):
             self.timer += self.clock.tick()
@@ -197,9 +200,11 @@ class gameBoard():
     def drawNumber(self,n):
         # print("dolan")
         if(n == 0):
-            self.screen.blit( self.font.render("GO!",1,(255,255,255)),(4*self.sS,10*self.sS))
+            go = self.fontBig.render('GO!', 1, (255,255,255))
+            self.screen.blit(go,(5*self.sS - go.get_rect().width/2,10*self.sS-go.get_rect().height/2 - 1))
             return
-        self.screen.blit( self.font.render("Game starts in: "+str(n),1,(255,255,255)),(0.5*self.sS,10*self.sS))
+        countdown = self.fontBig.render(str(n), 1, (255,255,255))
+        self.screen.blit(countdown,(5*self.sS - countdown.get_rect().width/2,10*self.sS-countdown.get_rect().height/2 - 1))
     def run(self):
         if self.quit:
             return
@@ -306,9 +311,9 @@ class gameBoard():
         if(self.number_count<4000):
             # print('dolan')
             self.update()
-            self.font = pygame.font.SysFont("ComicSans",51)
+            self.font = pygame.font.SysFont("Comic Sans MS",51)
             self.drawNumber(3-int(self.number_count/1000))
-            self.font = pygame.font.SysFont("ComicSans",21)
+            self.font = pygame.font.SysFont("Comic Sans MS",21)
             
         else:
             self.current = self.grav.fall(self.current,self.grid,self.timer)
