@@ -11,6 +11,9 @@ from random import randint
 
 class gameBoard():
     def __init__(self):
+        # initialize the pygame module
+        pygame.init()
+
         pygame.font.init()
         self.font = pygame.font.SysFont("Comic Sans MS",32)
         self.fontBig = pygame.font.SysFont("Comic Sans MS",64)
@@ -45,8 +48,6 @@ class gameBoard():
         self.clock = pygame.time.Clock()
         self.clock3 = pygame.time.Clock()
         self.number_count=0
-        # initialize the pygame module
-        pygame.init()
 
         # Limiting how fast press can go
         self.pressedTimer = 0
@@ -97,8 +98,8 @@ class gameBoard():
         self.drawGhost(self.current)
         self.drawBlock(self.grid.next)
         self.drawBlock(self.grid.next0)
-        self.screen.blit(self.playerName, (5*self.sS - 0.5*self.playerNameWidth,self.sS-6))
-        self.screen.blit(self.opponentName, (21*self.sS - 0.5*self.opponentNameWidth,self.sS-6))
+        self.screen.blit(self.playerName, (5*self.sS - 0.5*self.playerNameWidth,self.sS-8))
+        self.screen.blit(self.opponentName, (21*self.sS - 0.5*self.opponentNameWidth,self.sS-8))
         
         if(self.timer < 500):
             self.timer += self.clock.tick()
