@@ -316,7 +316,7 @@ class Game:
                     if self.isHost:
                         print("'Esc' to leave as host")
                     else:
-                        print("'c' to challenge host")
+                        print("'c' to rechallenge host")
                         print("'l' to leave to lobby")
                     return
 
@@ -453,5 +453,5 @@ class Game:
                     print('Invalid command')
                     print()
                     print("Instructions:")
-                    print("'c' to challenge host")
+                    print("'c' to rechallenge host")
                     print("'l' to leave to lobby")
