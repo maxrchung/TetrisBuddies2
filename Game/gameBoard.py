@@ -244,8 +244,6 @@ class gameBoard():
                         self.keys[3]=True
                     elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                         self.keys[7]=True
-                    elif event.key==pygame.K_r:
-                        self.keys[5]=True
                 elif event.type == pygame.KEYUP:
                     self.pressedTimer = 96
                     if event.key==pygame.K_t or event.key==pygame.K_z:
@@ -262,8 +260,6 @@ class gameBoard():
                         self.keys[3]=False
                     elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                         self.keys[7]=False
-                    elif event.key==pygame.K_r:
-                        self.keys[5]=False
                 # only do something if the event is of type QUIT
                 if event.type == pygame.QUIT:
                     # change the value to False, to exit the main loop
@@ -299,16 +295,6 @@ class gameBoard():
                 if self.current.x+self.current.right()+1<self.col and self.sideCol(self.current, 1)==False:
                     self.current.x+=1
                     self.pressedTimer = 0
-
-        if self.keys[5]:
-            self.current = self.grid.next.moveIn()
-            self.grid.next = block()
-            self.grid.addLines(1)
-            pygame.quit()
-            Global.GameBoard = None
-            self.quit=True
-            return
-            self.keys[5] = False
 
         # Space
         if self.keys[6]:
@@ -362,7 +348,7 @@ class gameBoard():
                 print('You lost!')
                 print()
                 print('Switched state to Result')
-                print('Instructions:')
+                print('Commands:')
                 if Global.Game.getIsHost():
                     print("'Esc' to leave as host")
                 else:

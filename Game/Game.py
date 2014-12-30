@@ -78,10 +78,11 @@ class Game:
             print('Hello ' + Global.player.getName() + '!')
             print()
             print("Changed state to Lobby")
-            print("Instructions:")
+            print("Commands:")
             print("'h' to host a room")
             print("'v' to view available rooms")
             print("'0', '1', '2', ... to join a room")
+            print("'i' for game instructions")
             print("'q' to quit game")
             
             self.state = 'Lobby'
@@ -99,7 +100,7 @@ class Game:
                 print('You are now hosting a game')
                 print()
                 print("Changed state to Hosting")
-                print("Instructions:")
+                print("Commands:")
                 print("'Esc' to leave as host")
 
             # Look for rooms
@@ -119,6 +120,16 @@ class Game:
                 Global.NetworkManager.getSocket().sendto(bytes(packet), ('<broadcast>', 6969))
                 # print('Broadcasted packet', response)
 
+            elif key == 'i':
+                print('Instructions:')
+                print("'left arrow' or 'a' to move left")
+                print("'right arrow' or 'd' to move right")
+                print("'down arrow' or 's' to move down")
+                print("'up arrow' or 'w' to rotate block clockwise")
+                print("'z' or 't' to rotate block counterclockwise")
+                print("'left shift' or 'c' to save block")
+                print("'spacebar' to drop block")
+
             # Quit game
             elif key == 'q':
                 print('You quit the game')
@@ -133,10 +144,11 @@ class Game:
                 except ValueError:
                     print("Invalid command")
                     print()
-                    print("Instructions:")
+                    print("Commands:")
                     print("'h' to host a room") 
                     print("'v' to view available rooms")
                     print("'0', '1', '2', ... to join a room number")
+                    print("'i' for game instructions")
                     print("'q' to quit game")
                     return
 
@@ -199,7 +211,7 @@ class Game:
 
         # If hosting
         elif self.state == 'Hosting':
-            print("Waiting for challenger... 'Esc' to leave")
+            print("Waiting for challenge... 'Esc' to leave")
 
             # Block until we retetceive a challengeRequest
             # The message thread will spit out an exception here that we
@@ -217,10 +229,11 @@ class Game:
                             print('You left as host')
                             print()
                             print("Changed state to Lobby")
-                            print("Instructions:")
+                            print("Commands:")
                             print("'h' to host a room")
                             print("'v' to view available rooms")
                             print("'0', '1', '2', ... to join a room number")
+                            print("'i' for game instructions")
                             print("'q' to quit game")
                             return
 
@@ -280,7 +293,7 @@ class Game:
                     print('Lost connection with challenger')
                     print()
                     print('Changed state to Hosting')
-                    print("Instructions:")
+                    print("Commands:")
                     print("'Esc' to leave as host")
                 else:
                     pygame.quit()
@@ -289,10 +302,11 @@ class Game:
                     print('Lost connection with host')
                     print()
                     print('Changed state to Lobby')
-                    print("Instructions:")
+                    print("Commands:")
                     print("'h' to host a room")
                     print("'v' to view available rooms")
                     print("'0', '1', '2', ... to join a room number")
+                    print("'i' for game instructions")
                     print("'q' to quit game")
 
             # If playing, continuously send information to other person
@@ -324,7 +338,7 @@ class Game:
                     print('You won!')
                     print()
                     print('Switched state to Result')
-                    print('Instructions:')
+                    print('Commands:')
                     if self.isHost:
                         print("'Esc' to leave as host")
                     else:
@@ -334,7 +348,7 @@ class Game:
 
         elif self.state == 'Result':
             if self.isHost:
-                print("Waiting for challenger... 'Esc' to leave")
+                print("Waiting for rechallenge... 'Esc' to leave")
 
                 # Block until we receive a challengeRequest
                 # The message thread will spit out an exception here that we
@@ -352,10 +366,11 @@ class Game:
                                 print('You left as host')
                                 print()
                                 print("Changed state to Lobby")
-                                print("Instructions:")
+                                print("Commands:")
                                 print("'h' to host a room")
                                 print("'v' to view available rooms")
                                 print("'0', '1', '2', ... to join a room number")
+                                print("'i' for game instructions")
                                 print("'q' to quit game")
 
                                 return
@@ -446,9 +461,7 @@ class Game:
                                 self.connectionClock.tick()
                                 self.connectionTTL = 0
                                 self.state = 'Playing'
-                                print('...')
                                 Global.GameBoard = gameBoard()
-                                print('xxx')
                                 return
                             else:
                                 continue
@@ -461,15 +474,16 @@ class Game:
                     print('You left the room')
                     print()
                     print('Changed state to Lobby')
-                    print("Instructions:")
+                    print("Commands:")
                     print("'h' to host a room")
                     print("'v' to view available rooms")
                     print("'0', '1', '2', ... to join a room number")
+                    print("'i' for game instructions")
                     print("'q' to quit game")
 
                 else:
                     print('Invalid command')
                     print()
-                    print("Instructions:")
+                    print("Commands:")
                     print("'c' to rechallenge host")
                     print("'l' to leave to lobby")
