@@ -104,6 +104,9 @@ class gameBoard():
         self.drawgrid(self.grid, 0)
         self.drawgrid(self.opponentGrid, 1)
         
+        boobs = pygame.image.load("boobs.png")
+        self.screen.blit(boobs, (self.col*self.sS-64,0))
+        
     def drawBlock(self,blk):
         image = pygame.image.load(blk.image)
         image.set_alpha(255)
