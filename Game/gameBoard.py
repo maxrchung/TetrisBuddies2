@@ -28,16 +28,18 @@ class gameBoard():
         self.grid.nextBlocks(self.current)
         self.quit = False
         self.prevPos = []
-        '''
+
         self.playerName = self.font.render(Global.player.getName(), 1, (255,255,255))
         self.opponentName = self.font.render(Global.opponent.getName(), 1, (255,255,255))
         self.playerNameWidth = self.playerName.get_rect().width
         self.opponentNameWidth = self.opponentName.get_rect().width
+
         '''
         self.playerName = self.font.render('Wax Chug the Gwad', 1, (255,255,255))
         self.opponentName = self.font.render(('name'), 1, (255,255,255))
         self.playerNameWidth = self.playerName.get_rect().width
         self.opponentNameWidth = self.opponentName.get_rect().width
+        '''
 
         self.clock = pygame.time.Clock()
         self.clock3 = pygame.time.Clock()
