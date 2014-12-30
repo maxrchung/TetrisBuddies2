@@ -26,8 +26,7 @@ class block:
         self.image = ("block"+str(r)+".png")
         self.array = self._arrangement(self.state)
     def moveIn(self):
-        r = random.randint(3,6)
-        self.x = r
+        self.x = 3
         self.y = 0
         return self
     def clone(self):

@@ -62,14 +62,20 @@ class cells:
         Global.SoundManager.playsound('youfail')
     
     def nextBlocks(self,blk):
-        self.next = block()
-        while self.next._arrangement == blk._arrangement:
-            self.next = block()
+        if self.next == None:
+                self.next = block()
+                while self.next._arrangement == blk._arrangement:
+                    self.next = block()
+        else:
+            self.next = self.next0
         self.next.x = 11
         self.next.y = 1
-        self.next0 = block()
-        while self.next0._arrangement == self.next._arrangement:
-            self.next0 = block()
+        if self.next0 == None:
+                self.next0 = block()
+                while self.next0._arrangement == self.next._arrangement:
+                    self.next0 = block()
+        else:
+            self.next0 = self.next1
         self.next0.x = 11
         self.next0.y = 6
         self.next1 = block()
