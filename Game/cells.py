@@ -97,7 +97,7 @@ class cells:
         Global.SoundManager.playsound('placed')
 
         for x in range (self.col):
-            if(self.filled[x][0]):
+            if(self.filled[x][1]):
                 self.lose = True
         return blk
     def checkCol(self,blk):
