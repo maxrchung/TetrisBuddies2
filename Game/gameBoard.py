@@ -276,7 +276,7 @@ class gameBoard():
                 self.keys[4]=False
 
         self.pressedTimer += self.pressedClock.tick()
-        if self.pressedTimer >= 72:
+        if self.pressedTimer >= 69:
             if self.keys[1]:
                 if self.grid.checkCol(self.current)==False:
                     self.current.y+=1
