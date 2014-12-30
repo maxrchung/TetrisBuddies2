@@ -88,13 +88,13 @@ class gameBoard():
         self.screen.blit(self.playerName, (5*self.sS - 0.5*self.playerNameWidth,self.sS-6))
         self.screen.blit(self.opponentName, (21*self.sS - 0.5*self.opponentNameWidth,self.sS-6))
         
-        if(self.timer < 2550):
+        if(self.timer < 500):
             self.timer += self.clock.tick()
             self.fadeInBlock(self.grid.next1, self.timer)
         else:
             self.drawBlock(self.grid.next1)
         if self.saved != None:
-            if(self.timer2 < 2550):
+            if(self.timer2 < 500):
                 self.timer2 += self.clock2.tick()
                 self.fadeInBlock(self.saved, self.timer2)
             else:
@@ -114,7 +114,7 @@ class gameBoard():
     def fadeInBlock(self,blk,time):
         image = pygame.image.load(blk.image)
         image.convert_alpha()
-        image.set_alpha(int(time/10))
+        image.set_alpha(time/500 * 255)
         for x in range(0,4):
                 for y in range(0,4):
                     if blk.array[x][y]:
