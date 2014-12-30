@@ -145,7 +145,6 @@ class gameBoard():
             if(self.grid.checkCol(blk)):
                 blk = self.grid.place(blk)
                 self.timer = 0
-                Global.SoundManager.playsound('placed')
                 return blk
             blk.y+=1
     def sideCol(self,blk,side):

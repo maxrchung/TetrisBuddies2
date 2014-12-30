@@ -20,7 +20,8 @@ class soundmanager():
             sound = pygame.mixer.Sound('SwitchBlock.wav')
             sound.play()
         elif soundname=='placed':
-            sound = pygame.mixer.Sound('placedblock.wav')
+            print('dolan')
+            sound = pygame.mixer.Sound('placeblock.wav')
             sound.play()
         elif soundname=='fourline':
             sound = pygame.mixer.Sound('tetriscomplete.wav')
