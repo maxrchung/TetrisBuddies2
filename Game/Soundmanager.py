@@ -20,7 +20,7 @@ class soundmanager():
             sound = pygame.mixer.Sound('SwitchBlock.wav')
             sound.play()
         elif soundname=='placed':
-            print('dolan')
+            # print('dolan')
             sound = pygame.mixer.Sound('placeblock.wav')
             sound.play()
         elif soundname=='fourline':

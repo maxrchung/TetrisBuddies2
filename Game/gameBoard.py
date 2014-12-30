@@ -7,6 +7,7 @@ from cells import cells
 import Global
 import pickle
 from Soundmanager import *
+from random import randint
 
 class gameBoard():
     def __init__(self):
@@ -40,6 +41,7 @@ class gameBoard():
         self.opponentNameWidth = self.opponentName.get_rect().width
 
         self.pressedClock = pygame.time.Clock()
+        self.pressedTimer = 0
         self.clock = pygame.time.Clock()
         self.clock3 = pygame.time.Clock()
         self.number_count=0
