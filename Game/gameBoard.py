@@ -25,21 +25,22 @@ class gameBoard():
         self.grid = cells(self.col,self.row)
         self.opponentGrid = cells(self.col,self.row)
         self.current = self.grid.next.moveIn()
+        self.grid.next = None
         self.grid.nextBlocks(self.current)
         self.quit = False
         self.prevPos = []
-
+        '''
         self.playerName = self.font.render(Global.player.getName(), 1, (255,255,255))
         self.opponentName = self.font.render(Global.opponent.getName(), 1, (255,255,255))
         self.playerNameWidth = self.playerName.get_rect().width
         self.opponentNameWidth = self.opponentName.get_rect().width
-
         '''
+        
         self.playerName = self.font.render('Wax Chug the Gwad', 1, (255,255,255))
         self.opponentName = self.font.render(('name'), 1, (255,255,255))
         self.playerNameWidth = self.playerName.get_rect().width
         self.opponentNameWidth = self.opponentName.get_rect().width
-        '''
+        
 
         self.clock = pygame.time.Clock()
         self.clock3 = pygame.time.Clock()
@@ -316,7 +317,7 @@ class gameBoard():
             if self.saved == None:
                 self.saved = self.current.save()
                 self.current = self.grid.next.moveIn()
-                self.grid.next = block()
+                self.grid.nextBlocks(self.current)
                 self.grid.swapped = True
                 Global.SoundManager.playsound('switch')
                 self.timer2 = 0
