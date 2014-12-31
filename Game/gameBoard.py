@@ -263,7 +263,6 @@ class gameBoard():
                     elif event.key==pygame.K_a or event.key==pygame.K_LEFT:
                         self.keys[2]=True
                     elif event.key==pygame.K_d or event.key==pygame.K_RIGHT:
-                        print()
                         self.keys[3]=True
                     elif event.key==pygame.K_c or event.key==pygame.K_LSHIFT:
                         self.keys[7]=True
