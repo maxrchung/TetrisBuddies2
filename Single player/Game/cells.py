@@ -96,7 +96,10 @@ class cells:
         for y in range(self.row+1):
             for x in range(4):
                 if blk.bottom()[x]!=-1:
-                    if self.filled[blk.x+x][blk.y+blk.bottom()[x]+1]:
+                    try:
+                        if self.filled[blk.x+x][blk.y+blk.bottom()[x]+1]:
+                            return True
+                    except(IndexError):
                         return True
         return False     
     def clear(self,y):

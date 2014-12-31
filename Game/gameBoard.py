@@ -138,7 +138,7 @@ class gameBoard():
         image = self.blockImages[blk.image]
         ghostBlock = blk.clone()
         image.convert_alpha()
-        image.set_alpha(120)
+        image.set_alpha(80)
         while 1:
             if self.grid.checkCol(ghostBlock):
                 break
@@ -169,29 +169,33 @@ class gameBoard():
         for a in range (4):
             for b in range (4):
                 if blk.array[a][b]:
-                    if self.grid.filled[side+blk.x+a][blk.y+b]:
+                    try:
+                        if self.grid.filled[side+blk.x+a][blk.y+b]:
+                            return True
+                    except(IndexError):
                         return True
         return False
     def flipNudge(self,blk, LR):
         if(blk._arrangement == block2.block_Sq):
             return False
+        nudgex = 0
         temp = blk.clone()
         temp.rotate(LR)
         if self.sideCol(temp,-1) == True and self.sideCol(temp,1) == True:
             return False
         while temp.x < 0:
             temp.x+=1
-            blk.x+=1
+            nudgex+=1
         while (temp.right() == 3 and temp.x >6):
-            blk.x -= 1
+            nudgex -= 1
             temp.x -= 1
         for x in range(4):
             if temp.array[x]:
                 if temp.x + x>self.col:
-                    blk.x -= 1
+                    nudgex -= 1
                     temp.x -= 1
                     if temp.x +x> self.col:
-                        blk.x
+                        nudgex -=1
                         temp.x -= 1
                     if temp._arrangement == block2.block_S:
                         temp.x -= 1
@@ -201,15 +205,32 @@ class gameBoard():
                     if temp.array[x][y]:
                         if self.grid.filled[temp.x+x][temp.y+y]:
                             if x>1:
-                                blk.x-=1
+                                nudgex-=1
+                                temp.x-=1
                             else:
-                                blk.x+=1
+                                nudgex+=1
+                                temp.x+=1
         for a in range (4):
             for b in temp.bottom():
                 if temp.array[a][b]:
                     if self.grid.filled[temp.x+a][temp.y + b]:
                         blk.y -= 1
                         break
+        if self.sideCol(temp,-1) == True and self.sideCol(temp,1) == True:
+            return False
+        for x in range(4):
+            for y in range(4):
+                if temp.array[x][y]:
+                    if temp.x+x < 0:
+                        return False
+                    if temp.x+x > self.col:
+                        return False
+                    try:
+                        if self.grid.filled[temp.x+x][temp.y+y]:
+                            pass
+                    except(IndexError):
+                        return False
+        blk.x += nudgex
         return True
 
     def drawNumber(self,n):
