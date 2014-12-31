@@ -65,7 +65,7 @@ class gameBoard():
         self.running = True
         self.keys = [False, False, False, False,False, False,False,False]
         # main loop
-        self.grav = gravity(1830,5)
+        self.grav = gravity(1800,5)
         self.saved = None
 
         self.background = pygame.image.load('background.png')
