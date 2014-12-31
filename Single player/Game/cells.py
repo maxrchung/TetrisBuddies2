@@ -20,6 +20,9 @@ class cells:
         self.shake = False
         for x in range(col+1):
             self.filled[x][row]=1
+
+    def getScore(self): return self.score
+
     def rowFilled(self):
         lines_cleared = 0
         for y in range (self.row):
@@ -28,9 +31,10 @@ class cells:
                 if self.filled[x][y]!=1:
                     clear = False
                 if x == self.col-1 and clear:
-                    self.score+=1337
                     self.clear(y)
                     lines_cleared+=1
+
+        self.score += lines_cleared
         
         # Play sound if cleared lines
         if lines_cleared >= 4: # I mean... better safe than sorry

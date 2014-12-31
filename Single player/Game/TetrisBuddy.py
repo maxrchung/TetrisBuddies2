@@ -52,7 +52,7 @@ class gameBoard():
         Global.SoundManager = soundmanager()
 
         # load and set the logo
-        pygame.display.set_caption("TetrisBuddies")
+        pygame.display.set_caption("TetrisBuddy")
         # create a surface on screen that has the size of 240 x 180
         self.shakeScreen = pygame.display.set_mode(((self.col+6)*self.sS,self.row*self.sS))
         self.screen = self.shakeScreen.copy()
@@ -96,6 +96,9 @@ class gameBoard():
         self.screen.blit(self.playerName, (5*self.sS - 0.5*self.playerNameWidth,self.sS-8))
         self.screen.blit(self.opponentName, (21*self.sS - 0.5*self.opponentNameWidth,self.sS-8))
         
+        score = self.font.render(str(self.grid.getScore()), 1, (255,255,255))
+        self.screen.blit(score, (5*self.sS - score.get_rect().width/2, 2*self.sS))
+
         if(self.timer < 500):
             self.timer += self.clock.tick()
             self.fadeInBlock(self.grid.next1, self.timer)
