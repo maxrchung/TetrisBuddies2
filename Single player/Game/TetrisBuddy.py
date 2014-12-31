@@ -60,7 +60,7 @@ class gameBoard():
         self.running = True
         self.keys = [False, False, False, False,False, False,False,False]
         # main loop
-        self.grav = gravity(1800,5)
+        self.grav = gravity(1050)
         self.saved = None
 
         self.background = pygame.image.load('background.png')
@@ -243,6 +243,8 @@ class gameBoard():
         if self.quit:
             return
 
+        self.grav.increase(self.grid.clears)
+
         # event handling, gets all event from the eventqueue
         for event in pygame.event.get():
             if(self.number_count>4000):
@@ -353,6 +355,7 @@ class gameBoard():
             self.current = self.grav.fall(self.current,self.grid,self.timer)
             self.getPrevBlocks(self.current)
             self.update()
+        
     
             if self.grid.lose:
                 self.__init__()

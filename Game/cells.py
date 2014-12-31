@@ -14,6 +14,7 @@ class cells:
         self.next0 = None
         self.next1 = None
         self.swapped = False
+        self.clears = 0
         image = 7
         self.default = image
         self.filled = [[0 for x in range(row+1)] for x in range(col+1)]
@@ -36,8 +37,10 @@ class cells:
         # Play sound if cleared lines
         if lines_cleared >= 4: # I mean... better safe than sorry
             Global.SoundManager.playsound('fourline')
+            self.clears += 1
         elif lines_cleared >= 1:
             Global.SoundManager.playsound('singleline')
+            self.clears += 1
 
         # Send a line if cleared more than 2
         if lines_cleared >= 2:
