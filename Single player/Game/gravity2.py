@@ -12,7 +12,6 @@ class gravity:
             self._dropTime = self._startTime - (clears * 10)
         
     def fall(self,block,cells,timer):
-        print(self._dropTime)
         if (pygame.time.get_ticks() - self._time > self._dropTime
             and self._landing == False):
             self._time = pygame.time.get_ticks()
